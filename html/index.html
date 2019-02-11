@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>PDFReader</title> 
+<link type="text/css" rel="stylesheet" href="views/style/jsmind.css" />
+<link rel="stylesheet" type="text/css" href="views/style/simditor.css" />  
+<style>
+.pdfobject-container {
+	width: 60%;
+	height: 720px;
+	margin: 0;
+    float: right;
+}
+</style>
+</head>
+<body>
+
+<div id="container" style="width:100%">
+
+<div id="header" style="background-color:#FFA500;">
+
+<h1 style="margin-bottom:0;margin-top: -20px">论文阅读器</h1>
+
+<div id="controlbuttons" style="float: left">
+    <button onclick="add_node();">add a node</button>
+    <button onclick="remove_node();">remove node</button>
+    <!button id="zoom-out-button" style="width:50px" onclick="zoomOut();">zoomOut<!/button>
+</div>    
+</div>
+
+<div id="menu" style="background-color:#FFD700;height:720px;width:40%;float:right;">
+    <div id="mindpic" style="background-color: azure;height: 360px">
+    </div>
+    <textarea id="editor" placeholder="Balabala" ></textarea>
+</div>
+
+    
+
+    
+<div id="content"  class=" pdfobject-container">
+<!embed class="pdfobject" src="./mencius.pdf" type="application/pdf" style="overflow: auto; width: 100%; height: 100%;" internalinstanceid="13">
+<iframe name="footer" marginwidth=0 marginheight=0 width=100% height=100% src="./mencius.html" frameborder=0>
+</iframe>
+</div>
+
+<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+版权 © xueshenNB.com</div>
+</div>
+  
+<script type="text/javascript" src="views/scripts/jsmind.js"></script>
+<script type="text/javascript" src="views/scripts/jsmind.draggable.js"></script>
+<script type="text/javascript" src="views/scripts/jsmind.screenshot.js"></script>
+<script type="text/javascript">
+    var _jm = null
+   function open_empty(){
+        var options = {
+            container:'mindpic',
+            theme:'greensea',
+            editable:true
+        }
+        _jm = jsMind.show(options);
+       _jm.view.zoomOut();
+       _jm.view.zoomOut();
+       _jm.view.zoomOut();
+       _jm.view.zoomOut();
+        // _jm = jsMind.show(options,mind);
+    }
+    function add_node(){
+        var selected_node = _jm.get_selected_node(); // as parent of new node
+        if(!selected_node){prompt_info('please select a node first.');return;}
+
+        var nodeid = jsMind.util.uuid.newid();
+        var topic = '* Node_'+nodeid.substr(0,5)+' *';
+        var node = _jm.add_node(selected_node, nodeid, topic);
+    }
+    function get_selected_nodeid(){
+        var selected_node = _jm.get_selected_node();
+        if(!!selected_node){
+            return selected_node.id;
+        }else{
+            return null;
+        }
+    }
+    function remove_node(){
+        var selected_id = get_selected_nodeid();
+        if(!selected_id){prompt_info('please select a node first.');return;}
+
+        _jm.remove_node(selected_id);
+    }
+    var zoomOutButton = document.getElementById("zoom-out-button");
+    function zoomOut() {
+        if (_jm.view.zoomOut()) {
+            zoomInButton.disabled = false;
+        } else {
+            zoomOutButton.disabled = true;
+        };
+    };
+    //_jm.view.zoomOut()
+    open_empty();
+</script>
+    
+<script type="text/javascript" src="views/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="views/scripts/module.js"></script>
+<script type="text/javascript" src="views/scripts/hotkeys.js"></script>
+<script type="text/javascript" src="views/scripts/uploader.js"></script>
+<script type="text/javascript" src="views/scripts/simditor.js"></script>
+<script type="text/javascript">
+    var editor = new Simditor({
+  textarea: $('#editor')
+  //optional options
+});
+    </script>
+
+
+
+ 
+</body>
+</html>
